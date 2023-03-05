@@ -33,7 +33,7 @@ pub fn bytes_array_to_str(bytes_in: &[u8]) -> String {
     String::from_utf8_lossy(bytes_in).to_string()
 }
 
-pub fn xor_byte_arrays(a: Vec<u8>, b: Vec<u8>) -> Vec<u8> {
+pub fn xor_byte_vecs(a: Vec<u8>, b: Vec<u8>) -> Vec<u8> {
     let result = a
 	.iter()
 	.zip(b.iter())
@@ -42,7 +42,16 @@ pub fn xor_byte_arrays(a: Vec<u8>, b: Vec<u8>) -> Vec<u8> {
     return result
 }
 
-pub fn xor_byte_array_vs_byte(v: Vec<u8>, byte: u8) -> Vec<u8> {
+pub fn hamming_distance(a: Vec<u8>, b: Vec<u8>) -> u32 {
+    assert_eq!(a.len(), b.len(), "Must be same length");
+    let xor_vec = xor_byte_vecs(a, b);
+    let redu = xor_vec
+	.into_iter()
+	.fold(0, |acc, n| acc + n.count_ones());
+    return redu;
+}
+
+pub fn xor_byte_vec_vs_byte(v: Vec<u8>, byte: u8) -> Vec<u8> {
     let result: Vec<u8> = v
 	.iter()
 	.map(|x| x ^ byte)
